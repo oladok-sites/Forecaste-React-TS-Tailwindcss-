@@ -7,16 +7,23 @@ export type Condition = {
 	code: number;
 };
 
+type Hour = {
+	time: string;
+	condition: Condition;
+	dewpoint_c: number;
+	temp_c: number;
+};
+
 export type ForecastDay = {
 	day: {
 		avgtemp_c: number;
 		maxtemp_c: number;
 		mintemp_c: number;
 		maxwind_kph: number;
-		hour: object[];
 		condition: Condition;
 	};
-	date: string
+	date: string;
+	hour: Hour[];
 };
 
 export type Result = {
@@ -36,6 +43,30 @@ export type Result = {
 	};
 };
 
+type ConstsType = {
+	currentDate: string | undefined;
+	currentCity: string | undefined;
+	currentCountry: string | undefined;
+	currentCondition: string | undefined;
+	currentTemp: number | undefined;
+	currentTempMax: number | undefined;
+	currentTempMin: number | undefined;
+	currentDewPoint: number | undefined;
+	currentWind: number | undefined;
+};
+
+// type ConstsType = {
+// 	currentDate: string,
+// 	currentCity: string,
+//     currentCountry: string,
+//     currentCondition: string,
+//     currentTemp: number,
+//     currentTempMax: number,
+//     currentTempMin: number,
+//     currentDewPoint: number,
+//     currentWind: number,
+// }
+
 export type SearchContextType = {
 	cityInputRef: React.RefObject<HTMLInputElement | null>;
 	setFetchDay: React.Dispatch<React.SetStateAction<string>>;
@@ -43,7 +74,8 @@ export type SearchContextType = {
 };
 
 export type CurrentForecastContextType = {
-	currentConsts: any;
+	currentConsts: ConstsType;
+	formatWeatherDate: (localtime: string, system: 'Day' | 'Month') => string | undefined;
 };
 
 export type SliderContexType = {
@@ -56,12 +88,13 @@ export type SliderContexType = {
 export type DaysNavContexType = {
 	result: Result | undefined;
 	day: number;
-	setDay: React.Dispatch<React.SetStateAction<number>>
+	setDay: React.Dispatch<React.SetStateAction<number>>;
+	formatWeatherDate: (localtime: string, system: 'Day' | 'Month') => string | undefined;
 };
 
 export type GlobalContextType = {
 	search: SearchContextType;
 	currentForecast: CurrentForecastContextType;
-	slider: SliderContexType
-	days: DaysNavContexType
+	slider: SliderContexType;
+	days: DaysNavContexType;
 };

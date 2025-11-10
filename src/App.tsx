@@ -15,8 +15,9 @@ function App() {
 	const prevRef = useRef(null);
 	const nextRef = useRef(null);
 
+	
 	const currentConsts = {
-		currentDate: result?.location.localtime,
+		currentDate: result?.location.localtime || "",
 		currentCity: result?.location.name,
         currentCountry: result?.location.country,
         currentCondition: result?.forecast.forecastday[day].day.condition.text,
@@ -26,26 +27,26 @@ function App() {
         currentDewPoint: result?.current.dewpoint_c,
         currentWind: result?.forecast.forecastday[day].day.maxwind_kph,
 	}
-
+	
 	async function ForecastCityFetch(city: string, day: string) {
 		try {
 			const response = await fetch(
 				`http://api.weatherapi.com/v1/forecast.json?key=c1f1e863c1654398990210948250806&q=${city}&days=${day}&aqi=no&alerts=no`,
 			);
-
+			
 			if (!response.ok) throw Error;
-
+			
 			const result = await response.json();
-
+			
 			if (result.error) throw Error;
-
+			
 			setResult(result);
 			console.log(result);
 		} catch (error) {
 			alert('City are not found!');
 		}
 	}
-
+	
 	function formSubmit(e: FormEvent) {
 		e.preventDefault();
 		if (!cityInputRef.current) return
@@ -55,6 +56,46 @@ function App() {
 			ForecastCityFetch(cityInputRef.current?.value, fetchDay);
 			cityInputRef.current.value = '';
 		}
+	}
+	
+	function formatWeatherDate(localtime: string, system: 'Day' | 'Month') {
+		const date = new Date(localtime.length === 10 ? `${localtime}T00:00` : localtime);
+		
+		const weekday = date.toLocaleDateString('en-US', { weekday: 'long' });
+		const day = date.getDate();
+		const suffix =
+		day % 10 === 1 && day !== 11 ? 'st' : day % 10 === 2 && day !== 12 ? 'nd' : day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+		
+		const month = date.toLocaleDateString('en-US', { month: 'long' });
+		
+		if (system === 'Day') return `${weekday} ${day}${suffix}`;
+		
+		if (system === 'Month') return `${month} ${day}${suffix}`;
+	}
+	
+	const search: SearchContextType = {
+		cityInputRef,
+		setFetchDay,
+		formSubmit
+	}
+	
+	const currentForecast: CurrentForecastContextType = {
+		currentConsts,
+		formatWeatherDate
+	}
+	
+	const slider: SliderContexType = {
+		prevRef,
+		nextRef,
+		result,
+		day
+	}
+	
+	const days: DaysNavContexType = {
+		result,
+		day,
+		setDay,
+		formatWeatherDate
 	}
 
 	useEffect(() => {
@@ -78,30 +119,7 @@ function App() {
 
 		InnitMountFetch()
 	}, []);
-
-	const search: SearchContextType = {
-		cityInputRef,
-		setFetchDay,
-		formSubmit
-	}
-
-	const currentForecast: CurrentForecastContextType = {
-		currentConsts
-	}
-
-	const slider: SliderContexType = {
-		prevRef,
-		nextRef,
-		result,
-		day
-	}
-
-	const days: DaysNavContexType = {
-		result,
-		day,
-		setDay
-	}
-
+	
 	return (
 		<Context.Provider value={{ search, currentForecast, slider, days }}>
 			<section className="w-full bg-main-bg px-5">

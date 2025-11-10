@@ -8,17 +8,6 @@ import { useContext } from 'react';
 import Context from '../Context';
 
 export default function Slider() {
-	type HourObject = {
-		time: string;
-		condition: {
-			text: string;
-			icon: string;
-			code: number;
-		};
-		dewpoint_c: string;
-		temp_c: string;
-	};
-
 	const context = useContext(Context)
 
 	if (!context) return
@@ -45,7 +34,7 @@ export default function Slider() {
 			loop={true}
 			className="max-w-356 text-black-text font-poppins font-semibold"
 		>
-			{result?.forecast.forecastday[day].hour.map((hour: HourObject, index: number) => (
+			{result?.forecast.forecastday[day].hour.map((hour, index) => (
 				<SwiperSlide
 					key={index}
 					className="min-w-55 py-6 pl-4 bg-[linear-gradient(180deg,#541797_0%,#ff6a00_48.56%)] element-border rounded-[16px]"

@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import Context from "../Context";
+import { useContext } from 'react';
+import Context from '../Context';
 
 export default function Search() {
-	const context = useContext(Context)
+	const context = useContext(Context);
 
-	if (!context) return
+	if (!context) return;
 
-	const { cityInputRef, setFetchDay, formSubmit } = context.search
+	const { cityInputRef, setFetchDay, formSubmit } = context.search;
 
 	return (
 		<search className="font-inter flex justify-center gap-5 py-12 h-37">
@@ -31,7 +31,9 @@ export default function Search() {
 				<button
 					className="absolute right-5 top-1/2 -translate-y-1/2"
 					onClick={() => {
-						cityInputRef.current.value = '';
+						if (cityInputRef.current) {
+							cityInputRef.current.value = '';
+						}
 					}}
 				>
 					<svg width="17" height="17" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
