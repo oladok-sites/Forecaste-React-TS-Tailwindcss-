@@ -31,7 +31,7 @@ function App() {
 	async function ForecastCityFetch(city: string, day: string) {
 		try {
 			const response = await fetch(
-				`http://api.weatherapi.com/v1/forecast.json?key=c1f1e863c1654398990210948250806&q=${city}&days=${day}&aqi=no&alerts=no`,
+				`https://api.weatherapi.com/v1/forecast.json?key=c1f1e863c1654398990210948250806&q=${city}&days=${day}&aqi=no&alerts=no`,
 			);
 			
 			if (!response.ok) throw Error;
@@ -102,7 +102,7 @@ function App() {
 		async function InnitMountFetch() {
 			try {
 				const response = await fetch(
-					`http://api.weatherapi.com/v1/forecast.json?key=c1f1e863c1654398990210948250806&q=Kyiv&days=3&aqi=no&alerts=no`,
+					`https://api.weatherapi.com/v1/forecast.json?key=c1f1e863c1654398990210948250806&q=Kyiv&days=3&aqi=no&alerts=no`,
 				);
 				if (!response.ok) throw Error;
 
